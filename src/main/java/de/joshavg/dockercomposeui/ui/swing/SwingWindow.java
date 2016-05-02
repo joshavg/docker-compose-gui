@@ -12,25 +12,20 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 import de.joshavg.dockercomposeui.process.context.SwingWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub;
+import de.joshavg.dockercomposeui.process.events.Events;
 
 @SuppressWarnings("serial")
 public class SwingWindow extends JFrame {
 
-    public static final String EVENT_UP_ATTACHED_CLICKED = "main.window.up.attached.clicked";
-
-    public static final String EVENT_UP_DETACHED_CLICKED = "main.window.up.detached.clicked";
-
-    public static final String EVENT_DOWN_CLICKED = "main.window.down.clicked";
-
-    public static final String EVENT_OPEN_TERMINAL_CLICKED = "main.window.open.terminal.clicked";
-
-    public static final String EVENT_EDIT_COMPOSE_CLICKED = "main.window.edit.compose.clicked";
-
-    public SwingWindow(final SwingWindowContext context) {
+    public SwingWindow(final SwingWindowContext context) throws ClassNotFoundException, InstantiationException,
+                                                         IllegalAccessException, UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 400);
         setTitle();
@@ -48,11 +43,13 @@ public class SwingWindow extends JFrame {
         eventData.put("context", context);
 
         final JPanel southPanel = new JPanel(new FlowLayout());
-        southPanel.add(new LambdaButton("Up Attached", e -> EventHub.fire(EVENT_UP_ATTACHED_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("Up Detached", e -> EventHub.fire(EVENT_UP_DETACHED_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("Down", e -> EventHub.fire(EVENT_DOWN_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("Open Terminal", e -> EventHub.fire(EVENT_OPEN_TERMINAL_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("Edit Compose", e -> EventHub.fire(EVENT_EDIT_COMPOSE_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("Up Attached", e -> EventHub.fire(Events.UP_ATTACHED_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("Up Detached", e -> EventHub.fire(Events.UP_DETACHED_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("Down", e -> EventHub.fire(Events.DOWN_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("Open Terminal",
+                                        e -> EventHub.fire(Events.OPEN_TERMINAL_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("Edit Compose",
+                                        e -> EventHub.fire(Events.EDIT_COMPOSE_CLICKED, eventData)));
         container.add(southPanel, BorderLayout.SOUTH);
     }
 
