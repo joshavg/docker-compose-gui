@@ -1,4 +1,4 @@
-package de.joshavg.dockercomposeui.ui;
+package de.joshavg.dockercomposeui.ui.swing;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

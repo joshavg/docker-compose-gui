@@ -13,7 +13,7 @@ import de.joshavg.dockercomposeui.process.events.listener.SwingInitialMainTableL
 import de.joshavg.dockercomposeui.process.events.listener.OpenTerminal;
 import de.joshavg.dockercomposeui.process.events.listener.UpAttached;
 import de.joshavg.dockercomposeui.process.events.listener.UpDetached;
-import de.joshavg.dockercomposeui.ui.SwingWindow;
+import de.joshavg.dockercomposeui.ui.swing.SwingWindow;
 
 public class Main {
 

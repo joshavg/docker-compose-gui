@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import de.joshavg.dockercomposeui.process.context.MainWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub.EventListener;
-import de.joshavg.dockercomposeui.ui.ConfirmCommandDialog;
+import de.joshavg.dockercomposeui.ui.swing.ConfirmCommandDialog;
 
 public class EditCompose implements EventListener {
 
