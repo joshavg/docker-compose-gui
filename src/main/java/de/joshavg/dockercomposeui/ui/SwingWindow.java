@@ -14,11 +14,11 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import de.joshavg.dockercomposeui.process.MainWindowContext;
+import de.joshavg.dockercomposeui.process.context.SwingWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame {
+public class SwingWindow extends JFrame {
 
     public static final String EVENT_UP_ATTACHED_CLICKED = "main.window.up.attached.clicked";
 
@@ -30,7 +30,7 @@ public class MainWindow extends JFrame {
 
     public static final String EVENT_EDIT_COMPOSE_CLICKED = "main.window.edit.compose.clicked";
 
-    public MainWindow(final MainWindowContext context) {
+    public SwingWindow(final SwingWindowContext context) {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 400);
         setTitle();
@@ -69,7 +69,7 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private static JTable buildTable(final MainWindowContext context) {
+    private static JTable buildTable(final SwingWindowContext context) {
         final DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(final int row, final int column) {

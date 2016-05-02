@@ -1,10 +1,11 @@
 package de.joshavg.dockercomposeui.process.events.listener;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
-import de.joshavg.dockercomposeui.process.MainWindowContext;
+import de.joshavg.dockercomposeui.process.context.MainWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub.EventListener;
 import de.joshavg.dockercomposeui.ui.ConfirmCommandDialog;
 
@@ -16,16 +17,16 @@ public class OpenTerminal implements EventListener {
     public void onEvent(final Map<String, Object> event) {
         final MainWindowContext context = (MainWindowContext) event.get("context");
 
-        final int rowIx = context.getMainTable().getSelectedRow();
-        if (rowIx == -1) {
+        final Optional<String> path = context.getSelectedPath();
+        if (!path.isPresent()) {
             return;
         }
-        final String path = (String) context.getMainTable().getValueAt(rowIx, 1);
 
         final String service = JOptionPane.showInputDialog("Enter the service name", this.prevService);
         if (service != null && service.length() > 0) {
             this.prevService = service;
-            ConfirmCommandDialog.run("docker-compose exec " + service + " bash", path);
+            ConfirmCommandDialog.run(path.get(), "x-terminal-emulator", "-e", "docker-compose", "exec", service,
+                                     "bash");
         }
     }
 

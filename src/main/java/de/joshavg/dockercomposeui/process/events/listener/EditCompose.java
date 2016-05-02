@@ -2,10 +2,11 @@ package de.joshavg.dockercomposeui.process.events.listener;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
-import de.joshavg.dockercomposeui.process.MainWindowContext;
+import de.joshavg.dockercomposeui.process.context.MainWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub.EventListener;
 import de.joshavg.dockercomposeui.ui.ConfirmCommandDialog;
 
@@ -15,11 +16,11 @@ public class EditCompose implements EventListener {
     public void onEvent(final Map<String, Object> event) {
         final MainWindowContext context = (MainWindowContext) event.get("context");
 
-        final int rowIx = context.getMainTable().getSelectedRow();
-        if (rowIx == -1) {
+        final Optional<String> optpath = context.getSelectedPath();
+        if (!optpath.isPresent()) {
             return;
         }
-        final String path = (String) context.getMainTable().getValueAt(rowIx, 1);
+        final String path = optpath.get();
 
         String composeFilePath = null;
         final String yml = path + File.separatorChar + "docker-compose.yml";
@@ -36,7 +37,7 @@ public class EditCompose implements EventListener {
             return;
         }
 
-        ConfirmCommandDialog.run(path, "xdg-open", composeFilePath);
+        ConfirmCommandDialog.run("/", "xdg-open", composeFilePath);
     }
 
 }
