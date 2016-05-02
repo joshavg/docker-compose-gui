@@ -28,6 +28,8 @@ public class MainWindow extends JFrame {
 
     public static final String EVENT_OPEN_TERMINAL_CLICKED = "main.window.open.terminal.clicked";
 
+    public static final String EVENT_EDIT_COMPOSE_CLICKED = "main.window.edit.compose.clicked";
+
     public MainWindow(final MainWindowContext context) {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 400);
@@ -50,6 +52,7 @@ public class MainWindow extends JFrame {
         southPanel.add(new LambdaButton("Up Detached", e -> EventHub.fire(EVENT_UP_DETACHED_CLICKED, eventData)));
         southPanel.add(new LambdaButton("Down", e -> EventHub.fire(EVENT_DOWN_CLICKED, eventData)));
         southPanel.add(new LambdaButton("Open Terminal", e -> EventHub.fire(EVENT_OPEN_TERMINAL_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("Edit Compose", e -> EventHub.fire(EVENT_EDIT_COMPOSE_CLICKED, eventData)));
         container.add(southPanel, BorderLayout.SOUTH);
     }
 

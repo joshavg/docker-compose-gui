@@ -8,6 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import de.joshavg.dockercomposeui.process.MainWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub;
 import de.joshavg.dockercomposeui.process.events.listener.Down;
+import de.joshavg.dockercomposeui.process.events.listener.EditCompose;
 import de.joshavg.dockercomposeui.process.events.listener.InitialMainTableLoader;
 import de.joshavg.dockercomposeui.process.events.listener.OpenTerminal;
 import de.joshavg.dockercomposeui.process.events.listener.UpAttached;
@@ -41,6 +42,7 @@ public class Main {
         EventHub.listenTo(MainWindow.EVENT_UP_DETACHED_CLICKED, new UpDetached());
         EventHub.listenTo(MainWindow.EVENT_DOWN_CLICKED, new Down());
         EventHub.listenTo(MainWindow.EVENT_OPEN_TERMINAL_CLICKED, new OpenTerminal());
+        EventHub.listenTo(MainWindow.EVENT_EDIT_COMPOSE_CLICKED, new EditCompose());
     }
 
 }
