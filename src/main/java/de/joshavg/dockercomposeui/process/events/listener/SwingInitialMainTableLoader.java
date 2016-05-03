@@ -14,19 +14,18 @@ public class SwingInitialMainTableLoader implements EventListener {
     @Override
     public void onEvent(final Map<String, Object> event) {
         final SwingWindowContext context = (SwingWindowContext) event.get("context");
-        Config.getInstance().getCompositions().forEach(comp -> loadIntoTable(comp, context.getMainTableModel()));
+
+        final DefaultTableModel model = context.getMainTableModel();
+        final int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+
+        Config.getInstance().getCompositions().forEach(comp -> loadIntoTable(comp, model));
     }
 
     private static void loadIntoTable(final Composition comp, final DefaultTableModel model) {
         model.addRow(new Object[] { comp.getName(), comp.getPath() });
-
-        // {apache={image=eboraas/apache-php, volumes=[/home/jgizycki/docker/apache-php-1/:/var/www/html], ports=[80:80,
-        // 443:443]}}
-        // try {
-        // final Map<String, Object> parsed = new CompositionLoader(comp).load();
-        // } catch (final IOException e) {
-        // e.printStackTrace();
-        // }
     }
 
 }

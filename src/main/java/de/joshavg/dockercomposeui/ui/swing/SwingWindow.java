@@ -1,15 +1,20 @@
 package de.joshavg.dockercomposeui.ui.swing;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -47,37 +52,54 @@ public class SwingWindow extends JFrame {
         eventData.put("context", context);
 
         final JPanel southPanel = new JPanel(new FlowLayout());
-        southPanel.add(new LambdaButton("[A] Up Attached", e -> EventHub.fire(Events.UP_ATTACHED_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("[D] Up Detached", e -> EventHub.fire(Events.UP_DETACHED_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("[W] Down", e -> EventHub.fire(Events.DOWN_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("[T] Open Terminal",
-                                        e -> EventHub.fire(Events.OPEN_TERMINAL_CLICKED, eventData)));
-        southPanel.add(new LambdaButton("[E] Edit Compose",
-                                        e -> EventHub.fire(Events.EDIT_COMPOSE_CLICKED, eventData)));
+        southPanel.add(new LambdaButton("[A] Up Attached", e -> EventHub.fire(Events.UP_ATTACHED, eventData)));
+        southPanel.add(new LambdaButton("[D] Up Detached", e -> EventHub.fire(Events.UP_DETACHED, eventData)));
+        southPanel.add(new LambdaButton("[W] Down", e -> EventHub.fire(Events.DOWN, eventData)));
+        southPanel.add(new LambdaButton("[T] Open Terminal", e -> EventHub.fire(Events.OPEN_TERMINAL, eventData)));
+        southPanel.add(new LambdaButton("[E] Edit Compose", e -> EventHub.fire(Events.EDIT_COMPOSE, eventData)));
         container.add(southPanel, BorderLayout.SOUTH);
 
-        addKeyListeners(eventData);
+        createMenu(eventData);
+
+        addKeyListeners(eventData, this.table);
+        Arrays.asList(southPanel.getComponents()).forEach(c -> addKeyListeners(eventData, c));
     }
 
-    private void addKeyListeners(final Map<String, Object> data) {
-        this.table.addKeyListener(new KeyAdapter() {
+    private void createMenu(final Map<String, Object> data) {
+        final JMenuBar bar = new JMenuBar();
+        final JMenu menu = new JMenu("Config");
+
+        final JMenuItem addEntry = new JMenuItem("Add Entry");
+        addEntry.addActionListener(e -> EventHub.fire(Events.ADD_ENTRY, data));
+        menu.add(addEntry);
+
+        final JMenuItem removeEntry = new JMenuItem("Remove Entry");
+        removeEntry.addActionListener(e -> EventHub.fire(Events.REMOVE_ENTRY, data));
+        menu.add(removeEntry);
+
+        bar.add(menu);
+        setJMenuBar(bar);
+    }
+
+    private static void addKeyListeners(final Map<String, Object> data, final Component comp) {
+        comp.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(final KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_A:
-                        EventHub.fire(Events.UP_ATTACHED_CLICKED, data);
+                        EventHub.fire(Events.UP_ATTACHED, data);
                         break;
                     case KeyEvent.VK_D:
-                        EventHub.fire(Events.UP_DETACHED_CLICKED, data);
+                        EventHub.fire(Events.UP_DETACHED, data);
                         break;
                     case KeyEvent.VK_W:
-                        EventHub.fire(Events.DOWN_CLICKED, data);
+                        EventHub.fire(Events.DOWN, data);
                         break;
                     case KeyEvent.VK_T:
-                        EventHub.fire(Events.OPEN_TERMINAL_CLICKED, data);
+                        EventHub.fire(Events.OPEN_TERMINAL, data);
                         break;
                     case KeyEvent.VK_E:
-                        EventHub.fire(Events.EDIT_COMPOSE_CLICKED, data);
+                        EventHub.fire(Events.EDIT_COMPOSE, data);
                         break;
                 }
             }
