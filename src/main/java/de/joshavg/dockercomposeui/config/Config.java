@@ -59,7 +59,14 @@ public class Config {
         try {
             writer = new YamlWriter(new FileWriter(new File(PATH)));
             writer.getConfig().setClassTag("config", Config.class);
-            writer.write(new Config());
+
+            final Config c = new Config();
+            c.setAskForConfirmation(true);
+            c.setEditor("xdg-open");
+            c.setTerminalEmulator("x-terminal-emulator");
+            c.setCompositions(new ArrayList<>());
+
+            writer.write(c);
         } catch (final IOException e) {
             e.printStackTrace();
         } finally {
@@ -73,7 +80,13 @@ public class Config {
         }
     }
 
-    private List<Composition> compositions = new ArrayList<>();
+    private List<Composition> compositions;
+
+    private String terminalEmulator;
+
+    private String editor;
+
+    private boolean askForConfirmation;
 
     private Config() {
     }
@@ -103,6 +116,30 @@ public class Config {
 
     public void setCompositions(final List<Composition> compositions) {
         this.compositions = compositions;
+    }
+
+    public String getTerminalEmulator() {
+        return this.terminalEmulator;
+    }
+
+    public void setTerminalEmulator(final String terminalEmulator) {
+        this.terminalEmulator = terminalEmulator;
+    }
+
+    public boolean getAskForConfirmation() {
+        return this.askForConfirmation;
+    }
+
+    public void setAskForConfirmation(final boolean askForConfirmation) {
+        this.askForConfirmation = askForConfirmation;
+    }
+
+    public String getEditor() {
+        return this.editor;
+    }
+
+    public void setEditor(final String editor) {
+        this.editor = editor;
     }
 
 }

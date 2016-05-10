@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
+import de.joshavg.dockercomposeui.config.Config;
+import de.joshavg.dockercomposeui.process.CommandExecutor;
 import de.joshavg.dockercomposeui.process.context.MainWindowContext;
 import de.joshavg.dockercomposeui.process.events.EventHub.EventListener;
 import de.joshavg.dockercomposeui.ui.swing.ConfirmCommandDialog;
@@ -37,7 +39,14 @@ public class EditCompose implements EventListener {
             return;
         }
 
-        ConfirmCommandDialog.run("/", "xdg-open", composeFilePath);
+        final Config config = Config.getInstance();
+        final String[] command = new String[] { config.getEditor(), composeFilePath };
+
+        if (config.getAskForConfirmation()) {
+            ConfirmCommandDialog.run("/", command);
+        } else {
+            CommandExecutor.run("/", command);
+        }
     }
 
 }
